@@ -244,7 +244,7 @@ function StudentDetailDrawer({ student, onClose }: { student: Student; onClose: 
             <div className="flex flex-col gap-2">
               {STEP_LABELS.map((label, i) => {
                 const stepNum = i + 1;
-                const isDone = student.pasoActual >= stepNum || student.status === 'done';
+                const isDone = student.pasoActual > stepNum || student.status === 'done';
                 const isCurrent = student.pasoActual === stepNum && student.status !== 'done';
                 return (
                   <div key={i} className="flex items-center gap-3 rounded-lg px-3 py-2.5"
