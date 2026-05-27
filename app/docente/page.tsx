@@ -635,6 +635,15 @@ export default function DocentePage() {
           </span>
         </div>
         <div className="flex items-center gap-4">
+          <button
+            onClick={() => router.push('/plan')}
+            className="text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer hidden sm:block"
+            style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.25)' }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.25)')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.15)')}
+          >
+            Plan anual →
+          </button>
           <div className="flex items-center gap-1.5">
             <div style={{
               width: 8, height: 8, borderRadius: '50%',

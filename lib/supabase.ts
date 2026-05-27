@@ -10,7 +10,7 @@ export interface Credencial {
   id: string;
   usuario: string;
   pin: string;
-  rol: 'alumno' | 'docente';
+  rol: 'alumno' | 'docente' | 'padre';
   nombre: string;
 }
 

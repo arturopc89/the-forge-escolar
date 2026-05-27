@@ -29,6 +29,8 @@ export default function LoginPage() {
 
     if (cred.rol === 'alumno') {
       router.push('/alumno/dashboard');
+    } else if (cred.rol === 'padre') {
+      router.push('/padre');
     } else {
       router.push('/docente');
     }
@@ -164,9 +166,11 @@ export default function LoginPage() {
         </form>
 
         {/* Hint for demo */}
-        <p className="text-xs text-center mt-6" style={{ color: '#9CA3AF' }}>
-          Demo: <strong>maria.garcia</strong> / <strong>1234</strong>
-        </p>
+        <div className="mt-6 flex flex-col gap-1 text-xs text-center" style={{ color: '#9CA3AF' }}>
+          <p>Alumno: <strong>maria.garcia</strong> / <strong>1234</strong></p>
+          <p>Docente: <strong>docente</strong> / <strong>0000</strong></p>
+          <p>Familia: <strong>roberto.garcia</strong> / <strong>1234</strong></p>
+        </div>
       </div>
     </div>
   );
