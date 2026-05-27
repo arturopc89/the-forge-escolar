@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import { loginUsuario } from '@/lib/supabase';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,16 +16,21 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
-    // Simulate short delay
-    await new Promise((r) => setTimeout(r, 500));
+    const cred = await loginUsuario(usuario.trim(), pin.trim());
 
-    if (usuario === 'maria.garcia' && pin === '1234') {
-      router.push('/alumno/dashboard');
-    } else if (usuario === 'docente' && pin === '0000') {
-      router.push('/docente');
-    } else {
+    if (!cred) {
       setError('Usuario o PIN incorrecto. Revisá tus datos.');
       setLoading(false);
+      return;
+    }
+
+    // Store minimal session in sessionStorage for demo
+    sessionStorage.setItem('forge_user', JSON.stringify({ usuario: cred.usuario, nombre: cred.nombre, rol: cred.rol }));
+
+    if (cred.rol === 'alumno') {
+      router.push('/alumno/dashboard');
+    } else {
+      router.push('/docente');
     }
   }
 

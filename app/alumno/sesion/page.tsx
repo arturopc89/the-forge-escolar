@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { supabase, upsertProgreso, completarSesion } from '@/lib/supabase';
 
 /* ────────────────────────────────────────────────────────────
    TYPES
@@ -618,6 +619,30 @@ function Step4({ onDashboard, onLogin }: { onDashboard: () => void; onLogin: () 
   const [showXP, setShowXP] = useState(false);
   const [showNext, setShowNext] = useState(false);
   const [showConfetti, setShowConfetti] = useState(true);
+  const [xpStart, setXpStart] = useState(340);
+  const [xpEnd, setXpEnd] = useState(370);
+
+  // Save completion to Supabase
+  useEffect(() => {
+    async function saveCompletion() {
+      const raw = typeof window !== 'undefined' ? sessionStorage.getItem('forge_user') : null;
+      if (!raw) return;
+      const user = JSON.parse(raw);
+      const { data: alumnoData } = await supabase
+        .from('alumnos').select('id, xp').eq('usuario', user.usuario).single();
+      if (!alumnoData) return;
+      const currentXP = alumnoData.xp as number;
+      const reward = 30;
+      setXpStart(currentXP);
+      setXpEnd(currentXP + reward);
+      const maxXP = 500;
+      setXpWidth(Math.round((currentXP / maxXP) * 100));
+      await upsertProgreso(alumnoData.id, 'sesion-4', 4, true);
+      await completarSesion(alumnoData.id, reward);
+    }
+    saveCompletion();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const t1 = setTimeout(() => setShowBadge(true), 300);
@@ -689,13 +714,13 @@ function Step4({ onDashboard, onLogin }: { onDashboard: () => void; onLogin: () 
               style={{
                 height: 14, borderRadius: 999,
                 background: 'linear-gradient(90deg, #534AB7, #7B74CC)',
-                width: `${xpWidth}%`,
+                width: `${Math.round((xpEnd / 500) * 100)}%`,
                 transition: 'width 1.5s ease-out',
               }}
             />
           </div>
           <p className="text-sm" style={{ color: '#6B7280', fontFamily: "'JetBrains Mono', monospace" }}>
-            340 → 370 XP · Nivel 3
+            {xpStart} → {xpEnd} XP · Nivel {Math.floor(xpEnd / 100) + 1}
           </p>
         </div>
       )}
