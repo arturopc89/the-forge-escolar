@@ -554,13 +554,24 @@ function Step3({ onNext }: { onNext: () => void }) {
               background: 'white',
             }}
           >
-            {/* Base defaults — overridden by user's CSS below */}
+            {/* Reset browser defaults, then apply user CSS */}
             <style dangerouslySetInnerHTML={{
               __html: `
                 .preview-btn {
+                  /* reset browser button styles */
+                  -webkit-appearance: none;
+                  appearance: none;
+                  box-sizing: border-box;
+                  display: inline-block;
                   font-family: 'DM Sans', sans-serif;
                   font-size: 16px;
                   cursor: pointer;
+                  color: #1A1612;
+                  background: #E5E1D8;
+                  border: none;
+                  border-radius: 8px;
+                  padding: 8px 16px;
+                  /* ↓ alumno CSS — siempre pisa lo de arriba */
                   ${previewCSS}
                 }
               `
