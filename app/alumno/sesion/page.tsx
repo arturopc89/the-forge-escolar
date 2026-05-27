@@ -554,17 +554,18 @@ function Step3({ onNext }: { onNext: () => void }) {
               background: 'white',
             }}
           >
+            {/* Base defaults — overridden by user's CSS below */}
             <style dangerouslySetInnerHTML={{
-              __html: `.preview-btn { ${previewCSS} }`
+              __html: `
+                .preview-btn {
+                  font-family: 'DM Sans', sans-serif;
+                  font-size: 16px;
+                  cursor: pointer;
+                  ${previewCSS}
+                }
+              `
             }} />
-            <button
-              className="preview-btn rounded-lg px-4 py-2 text-sm font-medium transition-none"
-              style={{
-                background: '#E5E1D8', color: '#1A1612',
-                border: '1px solid #D1D5DB', borderRadius: 8,
-                fontFamily: "'DM Sans', sans-serif",
-              }}
-            >
+            <button className="preview-btn">
               Hola, soy un botón
             </button>
           </div>
